@@ -1,6 +1,10 @@
+<%@page import="model.bean.image"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.bean.detail"%>
 <%@page import="model.bean.catalogue"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<% detail dt = (detail) request.getAttribute("dt");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +15,35 @@
     <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
     <script>
+        function checkID_Img()
+        {
+            var row = event.target.parentNode.parentNode.rowIndex;
+            var id = "ID_Image" + row;
+            var img = "img" + row;
+            var des = "des" + row;
+            var ID = document.getElementById(id).value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() 
+            {
+                if (this.readyState == 4 && this.status == 200) 
+                {
+                    document.getElementById("warning").innerHTML = xmlhttp.responseText;
+                    if(this.responseText == "This id_image has already been used!")
+                    {
+                        document.getElementById('submit').disabled = true;
+                        document.getElementById(img).disabled = true;
+                        document.getElementById(des).disabled = true;
+                    }
+                    else {
+                        document.getElementById('submit').disabled = false;
+                        document.getElementById(img).disabled = false;
+                        document.getElementById(des).disabled = false;
+                    }
+                }
+            };
+            xmlhttp.open("GET", "HoiAn_Servlet?catalogue=1&showid=" + <%= dt.getCatalogue().getID_Catalogue() %> + "&updateDetailID=" + <%= dt.getID_Detail() %> + "&checkIDImg=" + ID, true);
+            xmlhttp.send();
+        }
         function addImg() {
             document.getElementsByName("maxCounts")[0].value = parseInt(document.getElementsByName("maxCounts")[0].value) + 1;
             var index = document.getElementsByName("maxCounts")[0].value;
@@ -25,9 +58,9 @@
             var ID_Image = "ID_Image" + index;
             var img = "img" + index;
             var des = "des" + index;
-            cell1.innerHTML = "<input name='" + ID_Image + "' class='noidung' type='text' value='" + ID_Image + "' placeholder='ID_Image'>";
-			cell2.innerHTML = "<input name='" + img + "' class='noidung' type='text' value='" + img + "' placeholder='link img'>";
-            cell3.innerHTML = "<input name='" + des + "' class='noidung' type='text' value='" + des + "' placeholder='link img'>";
+            cell1.innerHTML = "<input id='" + ID_Image + "' name='" + ID_Image + "' class='noidung' type='text' value='' placeholder='ID_Image' required oninput=\"checkID_Img()\">";
+			cell2.innerHTML = "<input id='" + img + "' name='" + img + "' class='noidung' type='text' value='' placeholder='link img'>";
+            cell3.innerHTML = "<input id='" + des + "' name='" + des + "' class='noidung' type='text' value='' placeholder='description img'>";
 			cell4.innerHTML = "<input class='bt' type='button' value='Delete' onclick='deleteRow(this)'>";
 		}
         function deleteRow(btn) {
@@ -39,32 +72,28 @@
 </head>
 <body>
     <form action="" method="post">
-        <% String warning = (String) request.getAttribute("warning"); 
-        	String warningimg = (String) request.getAttribute("warningimg"); 
-        	catalogue ctl = (catalogue) request.getAttribute("ctl");
-        %>
             <div class="content">
                 <table style="width: 50%;">
-                    <caption>Add Detail for <%= ctl.getName_Catalogue() %></caption>
+                    <caption>Update detail of <%= dt.getCatalogue().getName_Catalogue() %></caption>
                     <tr>
                         <td style="width: 5%;">ID_Detail</td>
-                        <td><input name="ID_Detail" class="noidung" type="text" value="" placeholder="ID_Detail" readonly></td>
+                        <td><input name="ID_Detail" class="noidung" type="text" value="<%= dt.getID_Detail() %>" placeholder="ID_Detail" readonly></td>
                     </tr>
                     <tr>
                         <td style="width: 5%;">Title</td>
-                        <td><input name="Title" class="noidung" type="text" value="" placeholder="Title"></td>
+                        <td><input name="Title" class="noidung" type="text" value="<%= dt.getTitle() %>" placeholder="Title"></td>
                     </tr>
                     <tr>
                         <td style="width: 5%;">Name</td>
-                        <td><input name="Name" class="noidung" type="text" value="" placeholder="Name"></td>
+                        <td><input name="Name" class="noidung" type="text" value="<%= dt.getName() %>" placeholder="Name"></td>
                     </tr>
                     <tr>
                         <td style="width: 5%;">Content</td>
-                        <td><textarea name="Content" class="noidung" type="text" value="" placeholder="Content" required></textarea></td>
+                        <td><textarea name="Content" class="noidung" type="text" placeholder="Content" required><%= dt.getContent() %></textarea></td>
                     </tr>
                     <tr>
                         <td style="width: 5%;">Other</td>
-                        <td><input name="Other" class="noidung" type="text" value="" placeholder="Other"></td>
+                        <td><input name="Other" class="noidung" type="text" value="<%= dt.getOther() %>" placeholder="Other"></td>
                     </tr>
                     <tr>
                         <td style="width: 5%;">Image</td>
@@ -77,17 +106,32 @@
                                         <td style="width: 45%;">Description</td>
                                         <td style="width: 5%;"></td>
                                     </tr>
+                                    <!-- vòng lặp -->
+									<% ArrayList<image> img = dt.getListImages();
+										if(img.size() > 0)
+										{
+											for(int i=0; i < img.size(); i++)
+											{
+												%>
+												<tr>
+                                                    <td><input class='noidung' type='text' value='<%= img.get(i).getID_Image() %>' readonly></td>
+                                                    <td><input class='noidung' type='text' value='<%= img.get(i).getImage() %>' placeholder='link img'></td>
+                                                    <td><input class='noidung' type='text' value='<%= img.get(i).getDescription() %>' placeholder='description img'></td>
+                                                    <td><a href="?catalogue=1&showid=<%= dt.getCatalogue().getID_Catalogue() %>&deleteImage=<%= img.get(i).getID_Image() %>&imgIDDetail=<%= img.get(i).getID_Detail() %>"><input class='bt' type='button' value='Delete'></a></td>
+                                                </tr>
+												<%
+											}
+										}
+									%>
+                                    <!--  -->
                                     <tr>
                                         <td colspan="2">
-                                            <input name="maxCounts" class="noidung" type="text" value=0 hidden>
-                                            <% if(warningimg != "")
-                                            { %>
-                                                <span style="color: red;" id="warning"><%=warningimg %></span>
-                                            <%} %>
+                                            <input name="maxCounts" class="noidung" type="text" value=<%= img.size() %> hidden>
+                                            <span style="color: red;" id="warning"></span>
                                         </td>
                                         <td>
                                             Number of images
-                                            <input name="rowCounts" class="noidung" type="text" value=0>
+                                            <input name="rowCounts" class="noidung" type="text" value=<%= img.size() %>>
                                         </td>
                                         <td><input class="bt" type="button" value="Add" onclick="addImg()"></td>
                                     </tr>
@@ -95,15 +139,6 @@
                             </div>
                         </td>
                     </tr>
-                    
-                     <% if(warning != "")
-                    { %>
-                        <tr>
-                             <td colspan="2">
-                                <span style="color: red;" id="warning"><%=warning %></span>
-                            </td>
-                         </tr>
-                    <%} %>
                         <td colspan="2" class="action" style="width: 40%;">
                             <input name="SaveUpdateDetail" class="bt" type="submit" value="Save">
                             <input class="bt" type="reset" name="" id="" value="Reset">

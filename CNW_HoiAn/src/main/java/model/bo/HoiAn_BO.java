@@ -17,12 +17,16 @@ public class HoiAn_BO {
 	public ArrayList<catalogue> getAllCatalogues() throws Exception {
 		return hoiAn_DAO.getAllCatalogues();
 	}
-	public boolean addCatalogue(String ID_Catalogue, String Name_Catalogue) throws Exception {
+	public boolean checkIDCatalogue(String ID_Catalogue) throws Exception {
 		if(hoiAn_DAO.checkID_Catalogue(ID_Catalogue) == true)
 		{
-			if (hoiAn_DAO.addCatalogue(ID_Catalogue, Name_Catalogue) == 1) {
 				return true;
-			}
+		}
+		return false;
+	}
+	public boolean addCatalogue(String ID_Catalogue, String Name_Catalogue) throws Exception {
+		if (hoiAn_DAO.addCatalogue(ID_Catalogue, Name_Catalogue) == 1) {
+			return true;
 		}
 		return false;
 	}
@@ -51,23 +55,34 @@ public class HoiAn_BO {
 	public ArrayList<detail> getDetailsOfCatalogue(String ID_Catalogue) throws Exception {
 		return hoiAn_DAO.getDetailsOfCatalogue(ID_Catalogue);
 	}
-	public boolean addDetail(detail dt) throws Exception {
-		if(hoiAn_DAO.checkID_Detail(dt.getID_Detail()) == true)
+	public boolean checkIDDetail(String ID_Detail) throws Exception {
+		if(hoiAn_DAO.checkID_Detail(ID_Detail) == true)
 		{
-			if (hoiAn_DAO.addDetail(dt) == 1) {
 				return true;
-			}
+		}
+		return false;
+	}
+	public boolean addDetail(detail dt) throws Exception {
+		if (hoiAn_DAO.addDetail(dt) == 1) {
+			return true;
+		}
+		return false;
+	}
+	public boolean checkIDImg(String ID_Img) throws Exception {
+		if(hoiAn_DAO.checkID_Image(ID_Img) == true)
+		{
+				return true;
 		}
 		return false;
 	}
 	public boolean addImage(image img) throws Exception {
-		if(hoiAn_DAO.checkID_Image(img.getID_Image()) == true)
-		{
-			if (hoiAn_DAO.addImage(img) == 1) {
-				return true;
-			}
+		if (hoiAn_DAO.addImage(img) == 1) {
+			return true;
 		}
 		return false;
+	}
+	public detail getDetail(String ID_Detail) throws Exception {
+		return hoiAn_DAO.getDetail(ID_Detail);
 	}
 	public boolean updateDetail(detail dt) throws Exception {
 		if(hoiAn_DAO.updateDetail(dt) != 0)

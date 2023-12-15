@@ -1,3 +1,4 @@
+<%@page import="model.bean.catalogue"%>
 <%@page import="model.bean.detail"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -14,10 +15,10 @@
 </head>
 <body>
     <form action="" method="post">
-    <% ArrayList<detail> listDetails = (ArrayList<detail>) request.getAttribute("listDetails");  %>
         <div class="content">
             <table>
-                <caption><%= listDetails.get(0).getCatalogue().getName_Catalogue() %></caption>
+            <% catalogue ctl = (catalogue) request.getAttribute("ctl");  %>
+                <caption><%= ctl.getName_Catalogue() %></caption>
                 <tr class="tieude">
                     <td style="width: 10%;">ID_Detail</td>
                     <td style="width: 10%;">Title</td>
@@ -28,8 +29,11 @@
                     <td style="width: 10%;">Action</td>
                 </tr>
                 <!-- Để trong vòng for -->
-                <% for(int i=0; i < listDetails.size(); i++)
+                <% ArrayList<detail> listDetails = (ArrayList<detail>) request.getAttribute("listDetails");  
+                	if(listDetails.size() > 0)
                 	{
+	                 	for(int i=0; i < listDetails.size(); i++)
+	                	{
                 %>
                 <tr>
                     <td style="width: 10%;"><p class="noidung" style="white-space: pre-wrap; min-height: 1em;"><%= listDetails.get(i).getID_Detail() %></p></td>
@@ -45,11 +49,11 @@
                    	<%} %>
                     </td>
                     <td class="action" style="width: 10%;">
-                        <a href=""><input class="bt" type="button" value="Update"></a>
-                        <a href=""><input class="bt" type="button" value="Delete"></a>
+                        <a href="?catalogue=1&showid=<%= listDetails.get(i).getCatalogue().getID_Catalogue() %>&updateDetailID=<%= listDetails.get(i).getID_Detail() %>"><input class="bt" type="button" value="Update"></a>
+                        <a href="?catalogue=1&showid=<%= listDetails.get(i).getCatalogue().getID_Catalogue() %>&deleteDetailID=<%= listDetails.get(i).getID_Detail() %>"><input class="bt" type="button" value="Delete"></a>
                     </td>
                 </tr>
-                <%} %>
+                <%}} %>
                 <!--  -->
                 <tr>
                     <td style="width: 10%;"></td>
@@ -59,10 +63,9 @@
                     <td style="width: 15%;"></td>
                     <td style="width: 15%;"></td>
                     <td class="action" style="width: 10%;">
-                        <!-- <a href="?catalogue=1&showid=<%= listDetails.get(0).getCatalogue().getID_Catalogue() %>&addDetail=1"> -->
                             <input name="addDetail" class="bt" type="submit" value="Add">
                         <!-- </a> -->
-                        <a href="javascript:history.back()"><input class="bt" type="button" value="Back"></a>
+                        <a href="indexAdmin.jsp" target="_parent"><input class="bt" type="button" value="Home"></a>
                     </td>
                 </tr>
             </table>

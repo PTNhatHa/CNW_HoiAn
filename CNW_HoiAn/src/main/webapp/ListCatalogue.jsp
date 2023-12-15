@@ -24,8 +24,10 @@
                 </tr>
                 <!-- Để trong vòng for -->
                 <% ArrayList<catalogue> listCatalogues = (ArrayList<catalogue>) request.getAttribute("listCatalogues"); 
-                	for(int i=0; i < listCatalogues.size(); i++)
+                	if(listCatalogues.size() > 0)
                 	{
+	                	for(int i=0; i < listCatalogues.size(); i++)
+	                	{
                 %>
                 <tr>
                     <td style="width: 30%;"><p class="noidung" style="white-space: pre-wrap; min-height: 1em;"><%= listCatalogues.get(i).getID_Catalogue() %></p></td>
@@ -36,7 +38,7 @@
                         <a href="?catalogue=1&showid=<%= listCatalogues.get(i).getID_Catalogue() %>"><input class="bt" type="button" value="Show detail"></a>
                     </td>
                 </tr>
-                <%} %>
+                <%}} %>
                 <!--  -->
                 <tr>
                     <td style="width: 30%;"></td>

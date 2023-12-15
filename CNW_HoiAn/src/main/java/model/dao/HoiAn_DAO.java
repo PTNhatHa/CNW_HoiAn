@@ -151,9 +151,27 @@ public class HoiAn_DAO {
 		int rs = st.executeUpdate("INSERT INTO album VALUE ('" + img.getID_Detail() + "', '" + img.getID_Image() + "', '" + img.getImage() + "', '" + img.getDescription() + "')");
 		return rs;
 	}
+	public detail getDetail(String ID_Detail) throws Exception {
+		Statement st = connectDB();
+		ResultSet rs = st.executeQuery("SELECT * FROM detail_catalogue WHERE ID_Detail='" + ID_Detail + "'");
+		detail d = null;
+		while(rs.next())
+		{
+			d = new detail();
+			d.setCatalogue(getCatalogues(rs.getString("ID_Catalogue")));
+			d.setID_Detail(rs.getString("ID_Detail"));
+			d.setTitle(rs.getString("Title"));
+			d.setName(rs.getString("Name"));
+			d.setContent(rs.getString("Content"));
+			d.setOther(rs.getString("Other"));
+			d.setListImages(getImage(d.getID_Detail()));
+		}
+		return d;
+	}
 	public int updateDetail(detail dt) throws Exception {
 		Statement st = connectDB();
-		int rs = st.executeUpdate("UPDATE detail_catalogue SET Title='" + dt.getTitle() + ", Name='" + dt.getName() 
+		System.out.print(dt.getTitle() +"---" + dt.getName() +"---" + dt.getContent() +"---" + dt.getOther() +"---" + dt.getID_Detail());
+		int rs = st.executeUpdate("UPDATE detail_catalogue SET Title='" + dt.getTitle() + "', Name='" + dt.getName() 
 		+ "', Content='" + dt.getContent() + "', Other='" + dt.getOther() + "' WHERE ID_Detail='" + dt.getID_Detail() + "'");
 		return rs;
 	}

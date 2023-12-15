@@ -71,13 +71,26 @@ public class HoiAn_Servlet extends HttpServlet {
 		}
 		else if(request.getParameter("catalogue") != null)
 		{
-			String warning = "";
 			if(request.getParameter("Add") != null)
 			{	
-				request.setAttribute("warning", warning);
-				destination = "/AddCatalogue.jsp";
-				RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
-				rd.forward(request, response);
+				if(request.getParameter("checkIDCatalogue") != null)
+				{
+					try {
+						boolean check = hoiAn_BO.checkIDCatalogue(request.getParameter("checkIDCatalogue"));
+						if(check == false)
+						{
+							response.getWriter().write("This id has already been used!");
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					destination = "/AddCatalogue.jsp";
+					RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
+					rd.forward(request, response);
+				}
 			}
 			else if(request.getParameter("AddSave") != null)
 			{
@@ -88,8 +101,6 @@ public class HoiAn_Servlet extends HttpServlet {
 						response.sendRedirect("HoiAn_Servlet?catalogue=1");
 					}
 					else {
-						warning = "This id was existed. Please choose another id!";
-						request.setAttribute("warning", warning);
 						destination = "/AddCatalogue.jsp";
 						RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
 						rd.forward(request, response);
@@ -139,8 +150,6 @@ public class HoiAn_Servlet extends HttpServlet {
 			}
 			else if(request.getParameter("showid") != null)
 			{	
-				warning = "";
-				String warningimg = "";
 				if(request.getParameter("SaveAddDetail") != null)
 				{	
 					try {
@@ -177,23 +186,10 @@ public class HoiAn_Servlet extends HttpServlet {
 								{
 									response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid"));
 								}
-								else {
-									warningimg = "This id was existed. Please choose another id!";
-									request.setAttribute("warningimg", warningimg);
-									ctl = hoiAn_BO.getCatalogues(request.getParameter("showid"));
-									request.setAttribute("ctl", ctl);
-									destination = "/AddDetail.jsp";
-									RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
-									rd.forward(request, response);
-								}
-								
 							}
 							response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid"));
 						}
 						else {
-							warning = "This id was existed. Please choose another id!";
-							request.setAttribute("warningimg", warningimg);
-							request.setAttribute("warning", warning);
 							ctl = hoiAn_BO.getCatalogues(request.getParameter("showid"));
 							request.setAttribute("ctl", ctl);
 							destination = "/AddDetail.jsp";
@@ -208,14 +204,139 @@ public class HoiAn_Servlet extends HttpServlet {
 				else if(request.getParameter("addDetail") != null)
 				{
 					catalogue ctl;
+					if(request.getParameter("checkIDDetail") != null)
+					{
+						try {
+							boolean check = hoiAn_BO.checkIDDetail(request.getParameter("checkIDDetail"));
+							if(check == false)
+							{
+								response.getWriter().write("This id_detail has already been used!");
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else if(request.getParameter("checkIDImg") != null)
+					{
+						try {
+							boolean check = hoiAn_BO.checkIDImg(request.getParameter("checkIDImg"));
+							if(check == false)
+							{
+								response.getWriter().write("This id_image has already been used!");
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else {
+						try {
+							ctl = hoiAn_BO.getCatalogues(request.getParameter("showid"));
+							request.setAttribute("ctl", ctl);
+							destination = "/AddDetail.jsp";
+							RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
+							rd.forward(request, response);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+				else if(request.getParameter("SaveUpdateDetail") != null)
+				{
 					try {
-						request.setAttribute("warning", warning);
-						request.setAttribute("warningimg", warningimg);
-						ctl = hoiAn_BO.getCatalogues(request.getParameter("showid"));
-						request.setAttribute("ctl", ctl);
-						destination = "/AddDetail.jsp";
-						RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
-						rd.forward(request, response);
+						detail dt = new detail();
+						catalogue ctl = new catalogue();
+						dt.setID_Detail(request.getParameter("ID_Detail"));
+						dt.setTitle(request.getParameter("Title"));
+						dt.setName(request.getParameter("Name"));
+						dt.setContent(request.getParameter("Content"));
+						dt.setOther(request.getParameter("Other"));
+						boolean check = hoiAn_BO.updateDetail(dt);
+						if(check)
+						{
+							String id = "";
+							String linkimg = "";
+							String des = "";
+							image img = null;
+							int count = Integer.parseInt(request.getParameter("maxCounts"));
+							for(int k=1; k <= count; k++)
+							{
+								id = "ID_Image" + k;
+								linkimg = "img" + k;
+								des = "des" + k;
+								img = new image();
+								if(request.getParameter(id) == null) continue; 
+								img.setID_Detail(dt.getID_Detail());
+								img.setID_Image(request.getParameter(id));
+								img.setImage(request.getParameter(linkimg));
+								img.setDescription(request.getParameter(des));
+								boolean checkimg = hoiAn_BO.addImage(img);
+								if(checkimg)
+								{
+									response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid"));
+								}
+								else {
+									destination = "/UpdateDetail.jsp";
+									RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
+									rd.forward(request, response);
+								}
+							}
+							response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid"));
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(request.getParameter("updateDetailID") != null)
+				{	
+					if(request.getParameter("checkIDImg") != null)
+					{
+						try {
+							boolean check = hoiAn_BO.checkIDImg(request.getParameter("checkIDImg"));
+							if(check == false)
+							{
+								response.getWriter().write("This id_image has already been used!");
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else {
+						try {
+							detail dt = hoiAn_BO.getDetail(request.getParameter("updateDetailID"));
+							request.setAttribute("dt", dt);
+							destination = "/UpdateDetail.jsp";
+							RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
+							rd.forward(request, response);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+				else if(request.getParameter("deleteImage") != null)
+				{	
+					try {
+						if(hoiAn_BO.deleteImage(request.getParameter("deleteImage")))
+						{
+							response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid") + "&updateDetailID=" + request.getParameter("imgIDDetail"));
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(request.getParameter("deleteDetailID") != null)
+				{	
+					try {
+						if(hoiAn_BO.deleteDetail(request.getParameter("deleteDetailID")))
+						{
+							response.sendRedirect("HoiAn_Servlet?catalogue=1&showid=" + request.getParameter("showid"));
+						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -224,6 +345,8 @@ public class HoiAn_Servlet extends HttpServlet {
 				else {
 					try {
 						ArrayList<detail> listDetails = hoiAn_BO.getDetailsOfCatalogue(request.getParameter("showid"));
+						catalogue ctl = hoiAn_BO.getCatalogues(request.getParameter("showid"));
+						request.setAttribute("ctl", ctl);
 						request.setAttribute("listDetails", listDetails);
 						destination = "/DetailCatalogue.jsp";
 						RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
