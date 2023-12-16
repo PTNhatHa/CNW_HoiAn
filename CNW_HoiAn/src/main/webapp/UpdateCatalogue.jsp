@@ -14,7 +14,7 @@
     <% catalogue ctl = (catalogue) request.getAttribute("ctl"); %>
         <div class="content">
             <table style="width: 50%;">
-                <caption>Add Catalogue</caption>
+                <caption>Update Catalogue</caption>
                 <tr>
                     <td style="width: 5%;">ID_Catalogue</td>
                     <td><input name="ID_Catalogue" class="noidung" type="text" value="<%= ctl.getID_Catalogue() %>" readonly></td>

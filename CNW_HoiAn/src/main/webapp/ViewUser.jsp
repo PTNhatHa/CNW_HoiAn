@@ -11,7 +11,8 @@
 </head>
 <body>
     <form action="">
-    <% ArrayList<detail> listDetails = (ArrayList<detail>) request.getAttribute("listDetails");
+    <% 
+    	ArrayList<detail> listDetails = (ArrayList<detail>) request.getAttribute("listDetails");
      	catalogue ctl = (catalogue) request.getAttribute("ctl");  
      	ArrayList<String> listTitle = new ArrayList<String>();
      	for(int i=0; i<listDetails.size(); i++)
@@ -25,7 +26,7 @@
      			listTitle.add(listDetails.get(i).getTitle());
      		}
      	}
-     	%>
+     %>
         <section class="section2">
             <div class="section2-content">
                 <p class="title"><%= ctl.getName_Catalogue() %></p>

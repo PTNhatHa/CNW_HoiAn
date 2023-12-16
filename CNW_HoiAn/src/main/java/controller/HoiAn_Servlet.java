@@ -38,7 +38,9 @@ public class HoiAn_Servlet extends HttpServlet {
 				request.setAttribute("ctl", ctl);
 				ArrayList<detail> listDetails = hoiAn_BO.getDetailsOfCatalogue(id);
 				request.setAttribute("listDetails", listDetails);
-				destination = "/ViewUser.jsp";
+				if(id.equals("2") || id.equals("4"))
+					destination = "/ViewUser2.jsp";
+				else destination = "/ViewUser.jsp";
 				RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
 				rd.forward(request, response);
 			} catch (Exception e) {

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Lobster&family=Outfit:wght@100;200;300;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Lobster&family=Comfortaa:wght@100;200;300;500;600;700;800;900&display=swap');
 * {
     margin: 0px;
     padding: 0px;
@@ -38,12 +38,14 @@
 }
 
 .section2 {
+    position: relative;
     margin-top: 24px;
     width: 100%;
     overflow: hidden;
     text-align: center;
 }
 .section2-content {
+    position: relative;
     width: 1225px;
     overflow: hidden;
     margin: 10px 110px;
@@ -67,6 +69,7 @@
 }
 .content-img {
     width: 100%;
+    height: 100%;
 }
 .diadiem {
 	color: black;
@@ -75,4 +78,53 @@
 }
 .post {
     margin-bottom: 10px;
+}
+.short-post {
+    position: relative;
+    border: 1px solid black;
+    width: 601px;
+    height: 270px;
+    margin: 10px 7px 15px 0;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px grey;
+    float: left; 
+}
+.short-post-fake {
+    border: 1px solid transparent;
+    position: relative;
+    width: 601px;
+    height: 270px;
+    margin: 10px 7px 15px 0;
+    float: left;
+}
+.right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.short-post > img {
+    width: 181px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 10px;
+}
+.short-post-content {
+    text-align: left;
+    width: 364px;
+    height: 213px;
+    margin: 28px;
+    font-family: 'Comfortaa', sans-serif;
+}
+.short-post-title {
+    font-size: 18px;
+    font-weight: 900;
+}
+.short-post-text {
+    text-align: justify;
+    font-size: 15px;
+    font-weight: 400;
+    color: rgb(0, 0, 0, 0.5);
+    margin: 8px 0 8px 10px;
 }

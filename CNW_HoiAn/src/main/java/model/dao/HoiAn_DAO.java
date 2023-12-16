@@ -15,7 +15,7 @@ public class HoiAn_DAO {
 
 	public Statement connectDB() throws Exception
 	{
-		Class.forName("com.mysql.cj.jdbc.Driver");
+		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/cnw_hoian";
 		String user = "root";
 		String pw = "";
