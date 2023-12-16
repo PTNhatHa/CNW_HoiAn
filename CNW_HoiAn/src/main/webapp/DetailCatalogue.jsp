@@ -9,9 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Catalogue</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+    <link rel="stylesheet" href="styleAdmin.css">
 </head>
 <body>
     <form action="" method="post">
@@ -45,7 +43,7 @@
                     <% for(int j=0; j < listDetails.get(i).getListImages().size(); j++) 
                     	{
                    	%>
-                    	<img src="<%= listDetails.get(i).getListImages().get(j).getImage() %>" alt="ảnh" style="width: 45%;">
+                    	<img src="<%= listDetails.get(i).getListImages().get(j).getImage() %>" alt="ảnh" style="width: 100%;">
                    	<%} %>
                     </td>
                     <td class="action" style="width: 10%;">

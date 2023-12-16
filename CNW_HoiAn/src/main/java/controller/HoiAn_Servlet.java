@@ -30,7 +30,23 @@ public class HoiAn_Servlet extends HttpServlet {
 	{
 		String destination = null;
 		HoiAn_BO hoiAn_BO = new HoiAn_BO();
-		if(request.getParameter("dangnhap") != null)
+		if(request.getParameter("mod") != null)
+		{
+			String id = request.getParameter("mod");
+			try {
+				catalogue ctl = hoiAn_BO.getCatalogues(id);
+				request.setAttribute("ctl", ctl);
+				ArrayList<detail> listDetails = hoiAn_BO.getDetailsOfCatalogue(id);
+				request.setAttribute("listDetails", listDetails);
+				destination = "/ViewUser.jsp";
+				RequestDispatcher rd = getServletContext().getRequestDispatcher(destination);
+				rd.forward(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(request.getParameter("dangnhap") != null)
 		{
 			if(request.getParameter("submit") != null)
 			{

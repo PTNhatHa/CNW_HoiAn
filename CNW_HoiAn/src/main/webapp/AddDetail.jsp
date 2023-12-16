@@ -8,9 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Detail</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+    <link rel="stylesheet" href="styleAdmin.css">
     <script>
         function checkID_Detail()
         {
@@ -55,7 +53,7 @@
             {
                 if (this.readyState == 4 && this.status == 200) 
                 {
-                    document.getElementById("warning").innerHTML = xmlhttp.responseText;
+                    document.getElementById("warningimg").innerHTML = xmlhttp.responseText;
                     if(this.responseText == "This id_image has already been used!")
                     {
                         document.getElementById('submit').disabled = true;
@@ -137,11 +135,11 @@
                                     <tr>
                                         <td colspan="2">
                                             <input name="maxCounts" class="noidung" type="text" value=0 hidden>
-                                            <span style="color: red;" id="warning"></span>
+                                            <span style="color: red;" id="warningimg"></span>
                                         </td>
                                         <td>
                                             Number of images
-                                            <input name="rowCounts" class="noidung" type="text" value=0>
+                                            <input name="rowCounts" class="noidung" type="text" value=0 readonly>
                                         </td>
                                         <td><input id="Add" class="bt" type="button" value="Add" onclick="addImg()"></td>
                                     </tr>

@@ -7,21 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Header User</title>
     <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
 </head>
 <body>
 	<form action="" method="post">
         <div class="header">
             <div class="menu">
                 <div class="menuu">
-                    <a><input type="button" value="Giới thiệu"></a>
-                    <a><input type="button" value="Phương tiện"></a>
-                    <a><input type="button" value="Địa điểm"></a>
-                    <a><input type="button" value="Ẩm thực"></a>
-                    <a><input type="button" value="Nơi ở"></a>
+                    <a href="HoiAn_Servlet?mod=1" target="centeruser"><input type="button" value="Introduction"></a>
+                    <a href="HoiAn_Servlet?mod=2" target="centeruser"><input type="button" value="Transportation"></a>
+                    <a href="HoiAn_Servlet?mod=3" target="centeruser"><input type="button" value="Location"></a>
+                    <a href="HoiAn_Servlet?mod=4" target="centeruser"><input type="button" value="Cuisine"></a>
+                    <a href="HoiAn_Servlet?mod=5" target="centeruser"><input type="button" value="Accomodation"></a>
                 </div>
                 <div class="login">
-                    <a href="HoiAn_Servlet?dangnhap=1" target="_parent"><input type="button" value="Đăng nhập"></a>
+                    <a href="HoiAn_Servlet?dangnhap=1" target="_parent"><input type="button" value="Admin"></a>
                 </div>
             </div>
         </div>

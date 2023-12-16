@@ -170,7 +170,6 @@ public class HoiAn_DAO {
 	}
 	public int updateDetail(detail dt) throws Exception {
 		Statement st = connectDB();
-		System.out.print(dt.getTitle() +"---" + dt.getName() +"---" + dt.getContent() +"---" + dt.getOther() +"---" + dt.getID_Detail());
 		int rs = st.executeUpdate("UPDATE detail_catalogue SET Title='" + dt.getTitle() + "', Name='" + dt.getName() 
 		+ "', Content='" + dt.getContent() + "', Other='" + dt.getOther() + "' WHERE ID_Detail='" + dt.getID_Detail() + "'");
 		return rs;

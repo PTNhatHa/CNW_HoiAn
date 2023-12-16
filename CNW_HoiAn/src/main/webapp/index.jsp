@@ -8,6 +8,6 @@
 </head>
 <frameset frameborder="0" ROWS="50,*">
     <frame name="top" SRC="HeaderUser.jsp">
-    <frame name="center" SRC="">
+    <frame name="centeruser" SRC="HoiAn_Servlet?mod=1">
 </frameset>
 </html>
